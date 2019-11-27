@@ -92,8 +92,7 @@ class LibcurlConan(ConanFile):
             if self.settings.os != "Macos" or not self.options.darwin_ssl:
                 self.options["openssl"].shared = self.options.shared
         if self.options.with_libssh2:
-            if self.settings.compiler != "Visual Studio":
-                self.options["libssh2"].shared = self.options.shared
+            self.options["libssh2"].shared = self.options.shared
 
     def config_options(self):
         if self.settings.os != "Macos":
@@ -125,8 +124,7 @@ class LibcurlConan(ConanFile):
             else:
                 self.requires.add("openssl/1.1.1d")
         if self.options.with_libssh2:
-            if self.settings.compiler != "Visual Studio":
-                self.requires.add("libssh2/1.8.2")
+            self.requires.add("libssh2/1.8.2")
         if self.options.with_nghttp2:
             self.requires.add("libnghttp2/1.39.2")
 
@@ -367,6 +365,10 @@ class LibcurlConan(ConanFile):
             cmake.definitions['CURL_CA_PATH'] = 'none'
         elif self.options.with_ca_path:
             cmake.definitions['CURL_CA_PATH'] = self.options.with_ca_path
+        if self.options.with_libssh2:
+            cmake.definitions['LIBSSH2_FOUND'] = True
+            cmake.definitions['LIBSSH2_INCLUDE_DIR'] = self.deps_cpp_info["libssh2"].include_paths[0]
+            cmake.definitions['LIBSSH2_LIBRARY'] = self.deps_cpp_info["libssh2"].lib_paths[0]
 
         # all these options are exclusive. set just one of them
         # mac builds do not use cmake so don't even bother about darwin_ssl
