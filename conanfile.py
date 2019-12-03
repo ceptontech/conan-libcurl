@@ -45,7 +45,7 @@ class LibcurlConan(ConanFile):
                        'with_ca_bundle': None,
                        'with_ca_path': None,
                        'darwin_ssl': True,
-                       'with_libssh2': False,
+                       'with_libssh2': True,
                        'with_libidn': False,
                        'with_librtmp': False,
                        'with_libmetalink': False,
@@ -124,7 +124,7 @@ class LibcurlConan(ConanFile):
             else:
                 self.requires.add("openssl/1.1.1d")
         if self.options.with_libssh2:
-            self.requires.add("libssh2/1.8.2")
+            self.requires.add("libssh2/1.9.0")
         if self.options.with_nghttp2:
             self.requires.add("libnghttp2/1.39.2")
 
